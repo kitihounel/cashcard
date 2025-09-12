@@ -37,13 +37,18 @@ class SecurityConfig {
         UserDetails sarah = builder
                 .username("sarah")
                 .password(passwordEncoder.encode("password"))
-                .roles("card-owner") // No roles for now
+                .roles("card-owner")
                 .build();
-        UserDetails other = builder
-                .username("hank-owns-no-cards")
-                .password(passwordEncoder.encode("qrs456"))
+        UserDetails hank = builder
+                .username("hank")
+                .password(passwordEncoder.encode("secret"))
                 .roles("non-owner")
                 .build();
-        return new InMemoryUserDetailsManager(sarah, other);
+        UserDetails kumar = builder
+                .username("kumar")
+                .password(passwordEncoder.encode("hidden"))
+                .roles("card-owner")
+                .build();
+        return new InMemoryUserDetailsManager(sarah, hank, kumar);
     }
 }
