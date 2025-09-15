@@ -1,0 +1,1 @@
+curl -X POST -H "Content-Type: application/json" -u "sarah:password" -d '{"amount": 10.0, "id": null}'  http://localhost:8080/cashcards
