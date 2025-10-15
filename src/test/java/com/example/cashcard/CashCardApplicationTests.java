@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.net.URI;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -226,4 +228,21 @@ class CashCardApplicationTests {
 				.getForEntity("/cashcards/102", String.class);
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
+
+    @Test
+    void shouldProvideGoodMessage() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/hello", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        String message = documentContext.read("$.message");
+        assertThat(message).isEqualTo("Hello, world!");
+
+        String dateTimeString = documentContext.read("$.ts");
+        LocalDateTime ts = LocalDateTime.parse(dateTimeString);
+        LocalDateTime now = LocalDateTime.now();
+        Duration d = Duration.between(ts, now);
+        assertThat(d.toMillis()).isLessThan(1000);
+    }
 }

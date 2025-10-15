@@ -19,6 +19,9 @@ class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/hello")
+                        .permitAll())
+                .authorizeHttpRequests(request -> request
                         .requestMatchers("/cashcards/**")
                         .hasRole("card-owner"))
                 .httpBasic(Customizer.withDefaults())
